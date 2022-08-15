@@ -13,20 +13,33 @@ x <- guerry$crime_pers
 
 
 ## -----------------------------------------------------------------------------
-permutes <- purrr::map_dbl(1:299, ~{
  p_nb <- cond_permute_nb(nb)
  p_wt <- st_weights(p_nb)
- global_moran(x, p_nb, p_wt)[["I"]]
-})
-
-permutes[1:10]
+ observed <- global_c(x, p_nb, p_wt)
+ 
+ observed
 
 ## -----------------------------------------------------------------------------
-# the observed global moran
-observed <- global_moran(x, nb, wt)
-observed
+reps <- replicate(199, {
+  p_nb <- cond_permute_nb(nb)
+  p_wt <- st_weights(p_nb)
+  global_c(x, p_nb, p_wt)[["C"]]
+})
+
+
+## -----------------------------------------------------------------------------
+library(ggplot2)
+
+ggplot(data.frame(sim_val = reps), 
+       aes(sim_val)) +
+  geom_histogram(bins = 20) +
+  geom_vline(xintercept = observed[["C"]], 
+             color = "#6fb381", 
+             lty = 2,
+             ) +
+  theme_light()
 
 ## -----------------------------------------------------------------------------
 # simulated p-value
-(sum(observed[["I"]] <= permutes) + 1) / (299 + 1)
+(sum(observed[["C"]] <= reps) + 1) / (199 + 1)
 

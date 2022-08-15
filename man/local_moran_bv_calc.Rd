@@ -4,12 +4,10 @@
 \alias{local_moran_bv_calc}
 \title{Calculate the Local Bivariate Moran Statistic}
 \usage{
-local_moran_bv_calc(x, yj, wt)
+local_moran_bv_calc(x, y, nb, wt)
 }
 \arguments{
 \item{x}{a numeric vector of same length as \code{nb}.}
-
-\item{yj}{neighbor values of \code{y}, same length and lengths as \code{nb}.}
 
 \item{wt}{a weights list as created by \code{st_weights()}.}
 }

@@ -23,6 +23,7 @@
 #' Creating an edge list creates a column for each `i` position and `j` between an observation and their neighbors. You can recreate these values by expanding the `nb` and `wt` list columns.
 #'
 #' ```{r}
+#' library(magrittr)
 #' guerry_nb %>%
 #'   tibble::as_tibble() %>%
 #'   dplyr::select(nb, wt) %>%
@@ -31,6 +32,8 @@
 #' ```
 #' @export
 #' @examples
+#'
+#' library(magrittr)
 #' guerry %>%
 #'   dplyr::mutate(nb = st_contiguity(geometry),
 #'          wt = st_weights(nb)) %>%
@@ -52,16 +55,19 @@ st_as_edges.sf <- function(x, nb, wt) {
   # If not providing wt, then use nb2lines
   # Early exit in this case.
   if (is.null(wt)) {
-    res <- spdep::nb2lines(nb, coords = st_geometry(x)) %>%
-      dplyr::rename(from = i, to = j, i = i_ID, j = j_ID)
+    res <- spdep::nb2lines(nb, coords = st_geometry(x))
+    res <- dplyr::rename(res, from = i, to = j, i = i_ID, j = j_ID)
 
     return(res)
   }
 
   listw <- recreate_listw(nb, wt)
 
-  spdep::listw2lines(listw, st_geometry(x)) %>%
-    dplyr::rename(from = i, to = j, i = i_ID, j = j_ID)
+
+  dplyr::rename(
+    spdep::listw2lines(listw, st_geometry(x)),
+    from = i, to = j, i = i_ID, j = j_ID)
+
 }
 
 #' @rdname st_as_edges
@@ -69,15 +75,17 @@ st_as_edges.sf <- function(x, nb, wt) {
 st_as_edges.sfc <- function(x, nb, wt) {
   # if wt is missing use nb2lines
   if (rlang::is_missing(wt)) {
-    res <- spdep::nb2lines(nb, coords = x) %>%
-      dplyr::rename(from = i, to = j, i = i_ID, j = j_ID)
+    res <-
+      dplyr::rename(spdep::nb2lines(nb, coords = x),
+                    from = i, to = j, i = i_ID, j = j_ID)
 
     return(res)
   }
 
   listw <- recreate_listw(nb, wt)
-  spdep::listw2lines(listw, x) %>%
-    dplyr::rename(from = i, to = j, i = i_ID, j = j_ID)
+
+  dplyr::rename(spdep::listw2lines(listw, x),
+                from = i, to = j, i = i_ID, j = j_ID)
 
 }
 
@@ -98,6 +106,7 @@ st_as_edges.sfc <- function(x, nb, wt) {
 # @param ... arguments passed to methods.
 #' @export
 #' @examples
+#' library(magrittr)
 #' guerry %>%
 #'   dplyr::transmute(nb = st_contiguity(geometry)) %>%
 #'   st_as_nodes(nb)
@@ -146,8 +155,7 @@ st_as_nodes.sfc <- function(x, nb) {
       else stop("Point-conforming geometries required")
     }
   }
-  sf::st_as_sf(x) %>%
-    dplyr::mutate(i = attr(nb, "region.id"), .before = 1)
+    dplyr::mutate(sf::st_as_sf(x), i = attr(nb, "region.id"), .before = 1)
 
 }
 
@@ -174,8 +182,11 @@ st_as_nodes.sfc <- function(x, nb) {
 #' @seealso [st_as_nodes()] and [st_as_edges()]
 #' @export
 #' @examples
+#' library(magrittr)
+#'
 #' guerry_nb %>%
 #'   st_as_graph(nb, wt)
+#'
 st_as_graph <- function(x, nb, wt) {
   UseMethod("st_as_graph")
 }

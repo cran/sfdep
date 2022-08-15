@@ -20,9 +20,13 @@ class_modify <- function(x, class = "list") {
 
 #' Create a listw object from a neighbors and weight list
 #'
+#' Given a neighbor and weight list, create a `listw` object.
+#'
 #' @param nb a neighbor list object for example as created by `st_contiguity()`.
 #' @param wt a weights list as created by `st_weights()`.
-#' @keywords internal
+#' @export
+#' @examples
+#' recreate_listw(guerry_nb$nb, guerry_nb$wt)
 recreate_listw <- function(nb, wt) {
   which_style <- c(attr(wt, "W") %||% NA,
                    attr(wt, "B") %||% NA,
@@ -32,6 +36,8 @@ recreate_listw <- function(nb, wt) {
                    attr(wt, "S") %||% NA)
 
   possible_styles <- c("W", "B", "C", "U", "minmax", "S")
+
+  if (!inherits(nb, "nb")) nb <- class_modify(nb, "nb")
 
   listw <- list(style = possible_styles[!is.na(which_style)],
                 neighbours = nb,
@@ -73,12 +79,12 @@ find_xj <- function(x, nb) {
 #' # conditionally permute neighbors
 #' perm_nb <- cond_permute_nb(nb)
 #' perm_nb[1:5]
-#' @returns A list of class `nb` where each element contains a random sample of neighbors excluding the observed regioin.
+#' @returns A list of class `nb` where each element contains a random sample of neighbors excluding the observed region.
 cond_permute_nb <- function(nb, seed = NULL) {
   if (!is.null(seed)) set.seed(seed)
   n <- length(nb)
   cards <- lengths(nb)
-  res <- mapply(shuffle_nbs, 1:n, n, cards)
+  res <- mapply(shuffle_nbs, 1:n, n, cards, SIMPLIFY = FALSE)
   class_modify(res, "nb")
 }
 

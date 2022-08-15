@@ -5,6 +5,7 @@
 #' @inheritParams recreate_listw
 #' @inheritParams nmt_impl
 #' @examples
+#' library(magrittr)
 #' guerry %>%
 #'   dplyr::transmute(nb = st_knn(geometry, k = 10),
 #'          nmt = nb_match_test(list(crime_pers, literacy, suicides),
@@ -14,7 +15,7 @@
 #' @returns a `data.frame` with columns
 #'
 #' - `n_shared` (integer): the number of shared neighbors between geographic and attribute space
-#' - `nb_matches` (list): matched neighbor indexes. Each element is an iteger vector of same length as the ith observation of `n_shared`
+#' - `nb_matches` (list): matched neighbor indexes. Each element is an integer vector of same length as the ith observation of `n_shared`
 #' - `knn_nb` (list): the neighbors in attribute space
 #' - `probability` (numeric): the geometric probability of observing the number of matches
 #' - `p_sim` (numeric): a folded simulated p-value

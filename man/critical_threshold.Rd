@@ -4,10 +4,12 @@
 \alias{critical_threshold}
 \title{Identify critical threshold}
 \usage{
-critical_threshold(geometry)
+critical_threshold(geometry, k = 1)
 }
 \arguments{
 \item{geometry}{an sf geometry column}
+
+\item{k}{the minimum number of neighbors to check for}
 }
 \value{
 a numeric scalar value.

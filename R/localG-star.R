@@ -1,5 +1,7 @@
 #' Local G*
 #'
+#' Calculate the local Gi* statistic.
+#'
 #' @inheritParams local_g
 #' @export
 #' @examples
@@ -26,7 +28,7 @@ local_gstar <- function(x, nb, wt, alternative = "two.sided", ...) {
     nb <- spdep::include.self(nb)
     wt <- st_weights(nb)
   }
-  suppressWarnings({
+  suppressMessages({
     local_g(x, nb, wt, alternative = alternative, ...)
   })
 
@@ -41,8 +43,11 @@ local_gstar_perm <- function(x, nb, wt, nsim = 499, alternative = "two.sided", .
     wt <- st_weights(nb)
   }
 
-  suppressWarnings({
-    local_g_perm(x, nb, wt, nsim = nsim, alternative = alternative, ...)
+  suppressMessages({
+    res <- local_g_perm(x, nb, wt, nsim = nsim, alternative = alternative, ...)
   })
 
+  colnames(res)[1] <- "gi_star"
+
+  res
 }

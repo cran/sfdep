@@ -32,8 +32,10 @@ st_kernel_weights <- function(nb, geometry, kernel = "uniform",
   # if self isnt included elicit warning
   self_included <- !is.null(attr(nb, "self.included"))
   if (!self_included) {
-    cli::cli_warn("It is recommended to include the ith observation.
-                    Consider `nb = include_self(nb)`.")
+    rlang::warn(
+      c("It is recommended to include the ith observation.",
+                    " Consider `nb = include_self(nb)`.")
+      )
   }
 
   # verify kernels
@@ -44,6 +46,22 @@ st_kernel_weights <- function(nb, geometry, kernel = "uniform",
 
   # calculate distances
   dists <- spdep::nbdists(nb, pnts)
+
+  # # Identify missing nbs and null distances
+  # null_index <- which(unlist(lapply(dists, is.null)))
+  #
+  # if (length(null_index) > 0) {
+  #   cli::cli_alert_warning(
+  #     "Missing neighbors at position(s) {
+  #     glue::glue_collapse(null_index, last = ' and ', sep = ', ')
+  #     }.")
+  #   cli::cli_alert("Filling missing neighbor values with 0.")
+  # }
+  #
+  # # replace null_index
+  # for (i in null_index) {
+  #   dists[[i]] <- 0L
+  # }
 
   # check if adaptive, if T, calculate thresholds
   if (adaptive) {
@@ -62,6 +80,16 @@ st_kernel_weights <- function(nb, geometry, kernel = "uniform",
       res[[i]][which(nb[[i]] == i)] <- 1
     }
   }
+
+  attr(res, "kernel") <- kernel
+
+  # cli::cli_alert("Filling empty neighbor weights to `0`. ")
+  #
+  # # fill NaN
+  # # replace null_index
+  # for (i in null_index) {
+  #   res[[i]] <- 0L
+  # }
 
   res
 

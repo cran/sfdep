@@ -23,8 +23,11 @@ st_as_graph(x, nb, wt)
 Given an \code{sf} or \code{sfc} object and neighbor and weights lists, create an \code{sfnetwork} object.
 }
 \examples{
+library(magrittr)
+
 guerry_nb \%>\%
   st_as_graph(nb, wt)
+
 }
 \seealso{
 \code{\link[=st_as_nodes]{st_as_nodes()}} and \code{\link[=st_as_edges]{st_as_edges()}}
