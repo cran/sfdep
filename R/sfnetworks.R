@@ -187,6 +187,7 @@ st_as_nodes.sfc <- function(x, nb) {
 #' guerry_nb %>%
 #'   st_as_graph(nb, wt)
 #'
+#' @returns an `sfnetwork` object
 st_as_graph <- function(x, nb, wt) {
   UseMethod("st_as_graph")
 }
@@ -206,7 +207,7 @@ st_as_graph.sf <- function(x, nb, wt) {
   nodes <- st_as_nodes(x, nb)
   edges <- st_as_edges(x, nb, wt)
 
-  sfnetworks::sfnetwork(nodes, edges)
+  sfnetworks::sfnetwork(nodes, edges, directed = FALSE)
 }
 
 #
@@ -221,19 +222,7 @@ st_as_graph.sfc <- function(x, nb, wt) {
 
   sfnetworks::sfnetwork(
     st_as_nodes(x, nb),
-    st_as_edges(x, nb, wt)
+    st_as_edges(x, nb, wt),
+    directed = FALSE
   )
-}
-
-# utils -------------------------------------------------------------------
-
-#' Check if a vector of packages are available
-#'
-#' @param x a character vector of package names
-#' @keywords internal
-check_pkg_suggests <- function(x) {
-  missing_pkgs <- !vapply(x, requireNamespace, FUN.VALUE = logical(1), quietly = TRUE)
-
-  if (any(missing_pkgs))
-    cli::cli_abort('Missing packages: {paste("`", x[missing_pkgs], "`", sep = "", collapse = ", ")}')
 }

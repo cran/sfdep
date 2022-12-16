@@ -1,7 +1,7 @@
-#' @param x a spacetime object
+#' @param .data a spacetime object
 #' @export
 #' @rdname activate
-active <- function(x) attr(x, "active")
+active <- function(.data) attr(.data, "active")
 
 #' Activate spacetime context
 #'
@@ -14,9 +14,11 @@ active <- function(x) attr(x, "active")
 #' data frame represents geographies over one or more time periods and the sf
 #' object contains the geographic information for those locations.
 #'
-#' @param x a spacetime object
+#' @param .data a spacetime object
 #' @param what default NULL. Determines which context to activate. Valid argument values
-#'   are `"geometry"` and `"data"`. If left null, returns `x`.
+#'   are `"geometry"` and `"data"`. If left null, returns `.data`.
+#' @returns
+#' For `activate()` an object of class spacetime with the specified context activated. `active()` returns a scalar character with the active context can be either "goemetry" or "data".
 #' @export
 #' @examples
 #' df_fp <- system.file("extdata", "bos-ecometric.csv", package = "sfdep")
@@ -33,32 +35,38 @@ active <- function(x) attr(x, "active")
 #'
 #' active(bos)
 #' activate(bos, "geometry")
-activate <- function(x, what = NULL) {
+activate <- function(.data, what) UseMethod("activate")
+
+#' @export
+activate.spacetime <- function(.data, what = NULL) {
   match.arg(what, c("geometry", "data", NULL))
-  is_active <- active(x)
+  is_active <- active(.data)
   # if missing, set "what" to whatever is presently active
-  if (is.null(what)) return(x)
+  if (is.null(what)) return(.data)
   # if what is the same as active, return input object
-  if (is_active == what) return(x)
+  if (is_active == what) return(.data)
 
   switch(what,
-         geometry = activate_geometry(x),
-         data = activate_data(x))
+         geometry = activate_geometry(.data),
+         data = activate_data(.data))
 
 }
 
-activate_geometry <- function(x) {
+activate_geometry <- function(.data) {
   # class(x) <- setdiff(class(x), "spacetime")
-  new_spacetime_geo(x,
-                    attr(x, "geometry"),
-                    attr(x, "loc_col"),
-                    attr(x, "time_col"))
+  new_spacetime_geo(.data,
+                    attr(.data, "geometry"),
+                    attr(.data, "loc_col"),
+                    attr(.data, "time_col"))
 }
 
 
-activate_data <- function(x) {
-  new_spacetime_data(attr(x, "data"),
-                     x,
-                     attr(x, "loc_col"),
-                     attr(x, "time_col"))
+activate_data <- function(.data) {
+  new_spacetime_data(attr(.data, "data"),
+                     .data,
+                     attr(.data, "loc_col"),
+                     attr(.data, "time_col"))
 }
+
+
+
