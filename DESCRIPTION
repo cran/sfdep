@@ -1,6 +1,6 @@
 Package: sfdep
 Title: Spatial Dependence for Simple Features
-Version: 0.2.1
+Version: 0.2.2
 Authors@R: 
     person(given = "Josiah",
            family = "Parry",
@@ -23,8 +23,8 @@ Depends: R (>= 3.5.0)
 LazyData: true
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2022-12-16 14:27:15 UTC; josiahparry
+Packaged: 2022-12-21 14:39:24 UTC; josiahparry
 Author: Josiah Parry [aut, cre] (<https://orcid.org/0000-0001-9910-865X>)
 Maintainer: Josiah Parry <josiah.parry@gmail.com>
 Repository: CRAN
-Date/Publication: 2022-12-16 16:10:02 UTC
+Date/Publication: 2022-12-22 08:50:12 UTC
