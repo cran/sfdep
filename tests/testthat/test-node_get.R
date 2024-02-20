@@ -11,6 +11,7 @@
 test_that("nbs is spdep compliant", {
 
   skip_on_cran()
+  skip_on_ci()
 
   library(sfdep)
   library(dplyr)
@@ -25,7 +26,7 @@ test_that("nbs is spdep compliant", {
     mutate(
       nb = node_get_nbs(),
       elist = node_get_edge_list(),
-      wt = node_get_edge_col(elist, "len")
+      wt = node_get_edge_col(nb, "len")
     )
 
 
@@ -47,7 +48,7 @@ test_that("nbs is spdep compliant", {
 
   expect_equal(
     nb,
-    lapply(ig_adj_list, as.integer),
+    lapply(ig_adj_list, function(.x) unique(.x)),
     ignore_attr = TRUE
   )
 

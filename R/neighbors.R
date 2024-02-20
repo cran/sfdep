@@ -14,11 +14,12 @@
 #' # on basic polygons
 #' geo <- sf::st_geometry(guerry)
 #' st_contiguity(geo)
-#'
+#' if (requireNamespace("dplyr", quietyl = TRUE)) {
 #' # in a pipe
 #' library(magrittr)
 #' guerry %>%
 #'   dplyr::mutate(nb = st_contiguity(geometry), .before = 1)
+#'  }
 #' @returns a list of class `nb`
 st_contiguity <- function(geometry, queen = TRUE, ...) {
   nb <- spdep::poly2nb(geometry, queen = queen, ...)
@@ -81,7 +82,7 @@ st_dist_band <- function(geometry, lower = 0,
 
 #' Pure Higher Order Neighbors
 #'
-#' Identify higher order neighbors from a neighbor list. `order` must be greater than 1. When order equals 2 then the neighbors of the neighbors list is returned and so forth. See [Anselin's slides](https://spatial.uchicago.edu/sites/spatial.uchicago.edu/files/1_introandreview_reducedsize.pdf) for an example.
+#' Identify higher order neighbors from a neighbor list. `order` must be greater than 1. When order equals 2 then the neighbors of the neighbors list is returned and so forth. See [Anselin's book](https://spatialanalysis.github.io/handsonspatialdata/index.html) was: "https://spatial.uchicago.edu" "/sites/spatial.uchicago.edu/files/1_introandreview_reducedsize.pdf" for an example.
 #'
 #' @details
 #' Utilizes [`spdep::nblag()`]

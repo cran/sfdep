@@ -30,13 +30,13 @@ nb <- guerry_nb$nb
 wt <- guerry_nb$wt
 x <- guerry_nb$crime_pers
 moran <- global_moran_perm(x, nb, wt)
-broom::tidy(moran)
+moran
 }
 \seealso{
 Other global_moran: 
+\code{\link{global_moran}()},
 \code{\link{global_moran_bv}()},
 \code{\link{global_moran_test}()},
-\code{\link{global_moran}()},
 \code{\link{local_moran_bv}()}
 }
 \concept{global_moran}
