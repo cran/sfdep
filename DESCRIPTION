@@ -1,10 +1,10 @@
 Package: sfdep
 Title: Spatial Dependence for Simple Features
-Version: 0.2.4
+Version: 0.2.5
 Authors@R: c(
-    person("Josiah", "Parry", , "josiah.parry@gmail.com", role = c("aut"),
+    person("Josiah", "Parry", email = "josiah.parry@gmail.com", role = c("aut"),
            comment = c(ORCID = "0000-0001-9910-865X")),
-    person("Dexter", "Locke", , "dexter.locke@gmail.com", role = c("aut", "cre"),
+    person("Dexter", "Locke", email = "dexter.locke@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-2704-9720"))
   )
 Description: An interface to 'spdep' to integrate with 'sf' objects and the 'tidyverse'.
@@ -17,14 +17,14 @@ Suggests: broom, dbscan, dplyr, ggplot2, knitr, magrittr, patchwork,
         tidygraph
 Config/testthat/edition: 3
 Encoding: UTF-8
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Imports: sf, cli, spdep, stats, rlang
 Depends: R (>= 3.5.0)
 LazyData: true
 NeedsCompilation: no
-Packaged: 2024-02-17 15:43:53 UTC; josiahparry
+Packaged: 2024-09-12 21:29:43 UTC; dlocke
 Author: Josiah Parry [aut] (<https://orcid.org/0000-0001-9910-865X>),
   Dexter Locke [aut, cre] (<https://orcid.org/0000-0003-2704-9720>)
 Maintainer: Dexter Locke <dexter.locke@gmail.com>
 Repository: CRAN
-Date/Publication: 2024-02-20 10:20:02 UTC
+Date/Publication: 2024-09-13 12:00:05 UTC
